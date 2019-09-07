@@ -56,7 +56,6 @@ public class Main {
         } catch (ParseException e) {
             System.out.println(e.getMessage());
             formatter.printHelp("utility-name", options);
-
             System.exit(1);
         }
 
@@ -87,29 +86,29 @@ public class Main {
         // ============================= Работа с файлами ======================================
         BufferedReader reader = null;
         try {
+            //читаем
 
+            // todo: для каждого файла должен создаваться свой массив, куда должны записываться строки
             reader = new BufferedReader(new FileReader(cmd.getOptionValue("in")));
             String line;
 
+
+
+            // todo: тут должна быть логика для сортировки полученных массивов
+
+
+            // todo: записываем полученный результат в итоговый файл
             File result = new File(cmd.getOptionValue("out", "out.txt")); //можно прокидывать наименование сразу сюда
             if(!result.exists())
                 result.createNewFile();
-
-            //тут должна быть логика для сортировки
-
-            // тут надо переделать - запись должна осуществляться по отсортированному массиву,
-            // а не по содержимому считанного файла
             PrintWriter writer = new PrintWriter(result);
-
             while ((line = reader.readLine()) != null) {
-
-
-
                 // тут осуществляется запись в файл
                 writer.println(line);
             }
             writer.close();
 
+            // todo: разобраться с try / catch / finally и расставить их корректно
         } catch (IOException e) {
             System.out.println("Error: " + e);
         } finally {
