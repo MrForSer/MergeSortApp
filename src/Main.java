@@ -1,4 +1,5 @@
 import org.apache.commons.cli.*;
+
 import java.io.IOException;
 import java.util.*;
 import java.io.PrintWriter;
@@ -9,7 +10,7 @@ import java.io.FileReader;
 public class Main {
 
 
-    public static void main(String[] args) throws Exception {
+    public static <T> void main(String[] args) throws IOException {
 
         // ============================= Опции командной строки ================================
         Options options = new Options();
@@ -84,39 +85,34 @@ public class Main {
         System.out.println(dataType);
 
         // ============================= Работа с файлами ======================================
-        BufferedReader reader = null;
         try {
-            //читаем
+            String[] inputFiles = cmd.getOptionValues("in");
+            for (String str : inputFiles) {
+                //System.out.println(str);
 
-            // todo: для каждого файла должен создаваться свой массив, куда должны записываться строки
-            reader = new BufferedReader(new FileReader(cmd.getOptionValue("in")));
-            String line;
+                // todo: читаем каждый файл и сравниваем полученные строки
+
+                BufferedReader reader = new BufferedReader(new FileReader(cmd.getOptionValue("in")));
+
+                // todo: тут должна быть логика для сортировки полученных массивов
 
 
-
-            // todo: тут должна быть логика для сортировки полученных массивов
-
-
-            // todo: записываем полученный результат в итоговый файл
-            File result = new File(cmd.getOptionValue("out", "out.txt")); //можно прокидывать наименование сразу сюда
-            if(!result.exists())
-                result.createNewFile();
-            PrintWriter writer = new PrintWriter(result);
-            while ((line = reader.readLine()) != null) {
-                // тут осуществляется запись в файл
-                writer.println(line);
+                // todo: записываем полученный результат в итоговый файл
+                String line;
+                File result = new File(cmd.getOptionValue("out", "out.txt")); //можно прокидывать наименование сразу сюда
+                if (!result.exists())
+                    result.createNewFile();
+                PrintWriter writer = new PrintWriter(result);
+                while ((line = reader.readLine()) != null) {
+                    // тут осуществляется запись в файл
+                    writer.println(line);
+                }
+                writer.close();
+                reader.close();
             }
-            writer.close();
-
             // todo: разобраться с try / catch / finally и расставить их корректно
         } catch (IOException e) {
             System.out.println("Error: " + e);
-        } finally {
-            try {
-                reader.close();
-            } catch (IOException e){
-                System.out.println("Error: " + e);
-            }
         }
     }
 }

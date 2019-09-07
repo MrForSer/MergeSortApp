@@ -45,3 +45,12 @@ public abstract class MergeSort {
 
 //I don't recommend using linked list data structure if you need to sort. Just use an ArrayList.
 */
+
+            /*
+            for ()
+            if (dataType.getSelected() == "i") {
+                List <Integer> values = new ArrayList<Integer>();
+            } else {
+                List <String> values = new ArrayList<String>();
+            }
+            */
