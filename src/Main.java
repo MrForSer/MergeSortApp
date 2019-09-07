@@ -4,43 +4,49 @@ import java.util.*;
 import java.io.PrintWriter;
 import java.io.File;
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 public class Main {
 
 
     public static void main(String[] args) throws Exception {
 
+        // ============================= Опции командной строки ================================
         Options options = new Options();
+        OptionGroup sortOrder = new OptionGroup();
+        sortOrder.setRequired(true);
+        OptionGroup dataType = new OptionGroup();
+        dataType.setRequired(true);
 
         Option ascended = new Option("a", "ascended", false, "порядок сортировки: по возрастанию");
         ascended.setArgs(0);
-        ascended.setRequired(false);
-        options.addOption(ascended);
-
         Option descended = new Option("d", "descended", false, "порядок сортировки: по убыванию");
         descended.setArgs(0);
-        descended.setRequired(false);
-        options.addOption(descended);
-
         Option intData = new Option("i", "integer", false, "тип данных: числа");
         intData.setArgs(0);
-        intData.setRequired(false);
-        options.addOption(intData);
-
         Option stringData = new Option("s", "string", false, "тип данных: строки");
         stringData.setArgs(0);
-        stringData.setRequired(false);
-        options.addOption(stringData);
-
         Option output = new Option("out", "output", true, "имя выходного файла");
         output.setArgs(1);
         output.setRequired(true);
-        options.addOption(output);
-
         Option input = new Option("in", "input", true, "имена входных файлов");
         input.setArgs(Option.UNLIMITED_VALUES);
         input.setRequired(true);
+
+        sortOrder.addOption(ascended);
+        sortOrder.addOption(descended);
+        dataType.addOption(intData);
+        dataType.addOption(stringData);
+
+        options.addOption(ascended);
+        options.addOption(descended);
+        options.addOption(intData);
+        options.addOption(stringData);
+        options.addOption(output);
         options.addOption(input);
+
+        // ============================= Парсер командной строки ================================
 
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
@@ -55,40 +61,64 @@ public class Main {
             System.exit(1);
         }
 
-        // Значения по умолчанию
-        String sortOrder = "ascended";
-        String dataType = "integer";
+        // Создаем переменные для хранения опций и присваиваем им значения по умолчанию
+        //String sortOrder = "ascended";
+        //String dataType = "integer";
+        //List inFiles = Arrays.asList(cmd.getOptionValues("in"));
+        //String[] inFiles = cmd.getOptionValue("in");
+        String outFile = cmd.getOptionValue("out");
 
         // Обновляем значения в соответствии с данными из командной строки
+        /*
         if (cmd.hasOption("d")){
-            sortOrder = "descended";
+            // todo: дописать
+            //sortOrder = "descended";
         }
         if (cmd.hasOption("s")){
-            dataType = "string";
+            //dataType = "string";
         }
+        */
+        // ============================= Вывод опций (убрать) =================================
 
-        List inFiles = Arrays.asList(cmd.getOptionValues("in"));
-        System.out.println(inFiles);
-
-        String outFile = cmd.getOptionValue("out");
+        //System.out.println(inFiles);
         System.out.println(outFile);
-
         System.out.println(sortOrder);
         System.out.println(dataType);
 
-        //Работа с файлами
+        // ============================= Работа с файлами ======================================
+        BufferedReader br = null;
         try {
-            File file = new File(outFile); //можно прокидывать наименование сразу сюда
-            if(!file.exists())
-                file.createNewFile();
 
-            PrintWriter pw = new PrintWriter(file);
-            pw.println("Everything is working!");
-            pw.println("Hello World!");
+            br = new BufferedReader(new FileReader(cmd.getOptionValue("in")));
+            String line;
+
+            File of = new File(cmd.getOptionValue("out", "out.txt")); //можно прокидывать наименование сразу сюда
+            if(!of.exists())
+                of.createNewFile();
+
+            //тут должна быть логика для сортировки
+
+            // тут надо переделать - запись должна осуществляться по отсортированному массиву,
+            // а не по содержимому считанного файла
+            PrintWriter pw = new PrintWriter(of);
+            while ((line = br.readLine()) != null) {
+
+
+
+                // тут осуществляется запись в файл
+                pw.println(line);
+            }
             pw.close();
 
         } catch (IOException e) {
             System.out.println("Error: " + e);
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e){
+                System.out.println("Error: " + e);
+            }
+
         }
     }
 }
