@@ -92,6 +92,3 @@ public class Main {
         }
     }
 }
-
-//https://habr.com/ru/post/123360/
-//https://stackoverflow.com/questions/367706/how-do-i-parse-command-line-arguments-in-java
