@@ -3,7 +3,6 @@ import java.io.IOException;
 import java.util.*;
 import java.io.PrintWriter;
 import java.io.File;
-import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
@@ -86,39 +85,39 @@ public class Main {
         System.out.println(dataType);
 
         // ============================= Работа с файлами ======================================
-        BufferedReader br = null;
+        BufferedReader reader = null;
         try {
 
-            br = new BufferedReader(new FileReader(cmd.getOptionValue("in")));
+            reader = new BufferedReader(new FileReader(cmd.getOptionValue("in")));
             String line;
 
-            File of = new File(cmd.getOptionValue("out", "out.txt")); //можно прокидывать наименование сразу сюда
-            if(!of.exists())
-                of.createNewFile();
+            File result = new File(cmd.getOptionValue("out", "out.txt")); //можно прокидывать наименование сразу сюда
+            if(!result.exists())
+                result.createNewFile();
 
             //тут должна быть логика для сортировки
 
             // тут надо переделать - запись должна осуществляться по отсортированному массиву,
             // а не по содержимому считанного файла
-            PrintWriter pw = new PrintWriter(of);
-            while ((line = br.readLine()) != null) {
+            PrintWriter writer = new PrintWriter(result);
+
+            while ((line = reader.readLine()) != null) {
 
 
 
                 // тут осуществляется запись в файл
-                pw.println(line);
+                writer.println(line);
             }
-            pw.close();
+            writer.close();
 
         } catch (IOException e) {
             System.out.println("Error: " + e);
         } finally {
             try {
-                br.close();
+                reader.close();
             } catch (IOException e){
                 System.out.println("Error: " + e);
             }
-
         }
     }
 }
