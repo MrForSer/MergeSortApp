@@ -1,6 +1,4 @@
-import com.sun.scenario.effect.Merge;
 import org.apache.commons.cli.*;
-
 import java.io.IOException;
 import java.util.*;
 import java.io.PrintWriter;
@@ -57,8 +55,6 @@ public class Main {
             System.exit(1);
         }
 
-
-
         // Значения по умолчанию
         String sortOrder = "ascended";
         String dataType = "integer";
@@ -71,28 +67,6 @@ public class Main {
             dataType = "string";
         }
 
-        /*
-        String asc = cmd.getOptionValue("ascended"); -- ошибка, у этой опции нет значения
-        String desc = cmd.getOptionValue("descended");
-        String intd = cmd.getOptionValue("intData");
-        String strd = cmd.getOptionValue("stringData");
-
-        String inputFilePath = cmd.getOptionValue("input"); --ошибка, их может быть много
-        String outputFilePath = cmd.getOptionValue("output");
-
-        System.out.println(asc);
-        System.out.println(desc);
-        System.out.println(intd);
-        System.out.println(strd);
-        System.out.println(inputFilePath);
-        System.out.println(outputFilePath);
-        */
-
-        // Для отладки
-
-        //List test = Arrays.asList(cmd.getOptions());
-        //System.out.println(test);
-
         List inFiles = Arrays.asList(cmd.getOptionValues("in"));
         System.out.println(inFiles);
 
@@ -101,9 +75,6 @@ public class Main {
 
         System.out.println(sortOrder);
         System.out.println(dataType);
-
-        // пробуем сортировку слиянием
-        //int[] myNum = {10, 20, 30, 40, 4, 8, 9, 151, 644, 46, 66, 44};
 
         //Работа с файлами
         try {
