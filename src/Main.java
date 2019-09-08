@@ -2,6 +2,8 @@ import org.apache.commons.cli.*;
 import java.io.*;
 import java.util.*;
 
+import static java.lang.Integer.valueOf;
+
 public class Main {
 
 
@@ -47,6 +49,7 @@ public class Main {
         HelpFormatter formatter = new HelpFormatter();
         CommandLine cmd = null;
 
+        // todo: сделать нормальный хэллпер
         try {
             cmd = parser.parse(options, args);
         } catch (ParseException e) {
@@ -57,9 +60,7 @@ public class Main {
 
         // Сохраняем тип данных в переменную
         String dt = "string";
-        if (cmd.hasOption("i")){
-            dt = "integer";
-        }
+        if (cmd.hasOption("i")) dt = "integer";
 
         // ============================= Работа с файлами ======================================
         String[] inputFiles = cmd.getOptionValues("in");
@@ -69,14 +70,14 @@ public class Main {
             List<Integer> fileValues = new ArrayList<>();
             try {
                 String line;
-                for (int i = 0; i < inputFiles.length; i++) {
-                    BufferedReader reader = new BufferedReader(new FileReader(inputFiles[i]));
-                    while ((line = reader.readLine()) != null) {
-                        Integer intValue = Integer.valueOf(line);
-                        fileValues.add(intValue);
-                    }
+                for (String inputFile : inputFiles) {
+                    BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+                    while ((line = reader.readLine()) != null) fileValues.add(valueOf(line));
                     reader.close();
                 }
+
+                //todo : вынести сортировку и запись полученных значений в файл за if
+
                 // сортировка
                 System.out.println(fileValues);
                 List<Integer> mergedList =  Sorter.mergeSort(fileValues);
@@ -94,17 +95,9 @@ public class Main {
             List<String> fileValues = new ArrayList<>();
             try {
                 String line;
-                for (int i = 0; i < inputFiles.length; i++) {
-                    BufferedReader reader = new BufferedReader(new FileReader(inputFiles[i]));
-                    while ((line = reader.readLine()) != null) {
-                        String value = (line);
-                        fileValues.add(value);
-                        //if (cmd.hasOption("i")) {
-                        //    Integer.parseInt(line);
-                        //} else {
-                        //    fileValues.add(line);
-                        //}
-                    }
+                for (String inputFile : inputFiles) {
+                    BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+                    while ((line = reader.readLine()) != null) fileValues.add(line);
                     reader.close();
                 }
                 // сортировка
