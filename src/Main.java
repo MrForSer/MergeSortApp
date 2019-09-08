@@ -59,25 +59,41 @@ public class Main {
         // ============================= Работа с файлами ======================================
         String[] inputFiles = cmd.getOptionValues("in");
         List<Integer> fileValues = new ArrayList<>();
+        /*
+        if (cmd.hasOption(intData.getOpt())) {
+            List<Integer> fileValues = new ArrayList<>();
+        } else {
+            List<String> fileValues = new ArrayList<>();
+        }
+        */
         try {
             String line;
             for (int i = 0; i < inputFiles.length; i++) {
                 BufferedReader reader = new BufferedReader(new FileReader(inputFiles[i]));
                 while ((line = reader.readLine()) != null) {
-                    Integer uuid = Integer.valueOf(line);
-                    fileValues.add(uuid);
+                    Integer intValue = Integer.valueOf(line);
+                    fileValues.add(intValue);
+
+                    /*if (cmd.hasOption("i")) {
+                        Integer intValue = Integer.valueOf(line);
+                        fileValues.add(intValue);
+                    } else {
+                        //String strValue = String.valueOf(line);
+                        //fileValues.add((T) strValue);
+                    }*/
                 }
                 reader.close();
             }
 
 
             // todo: логика сортировки
-            Sorter.mergeSort(fileValues);
+            System.out.println(fileValues);
+            List<T> mergedList =  new ArrayList<T>((Collection<? extends T>) Sorter.mergeSort(fileValues));
+            System.out.println(mergedList);
 
 
             BufferedWriter writer = new BufferedWriter(new FileWriter(cmd.getOptionValue("out")));
-            // todo: вместо fileValues тут должен быть результирующий массив
-            Iterator<Integer> it = fileValues.iterator();
+            Iterator<T> it = mergedList.iterator();
             while (it.hasNext()) writer.write(it.next() + "\n");
             writer.close();
         } catch (Exception e) {
