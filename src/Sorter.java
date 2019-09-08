@@ -1,38 +1,63 @@
 import java.util.Arrays;
 
 public class Sorter {
-    public static int[] mergeSort(int[] input) {
-        if (input.length < 2) {
-            return input;
-        }
-        int mid = input.length / 2;
-        int[] left = Arrays.copyOfRange(input, 0, mid);
-        int[] right = Arrays.copyOfRange(input, mid, input.length);
-        return merge(mergeSort(left), mergeSort(right));
+
+    public static void main(String[] args) {
+        String[] values = {"foo", "bar", "alice", "bob", "celine", "david"};
+        mergeSort(values, 0, values.length - 1);
+        System.out.println("Result " + Arrays.toString(values));
     }
 
-    public static int[] merge(int[] left, int[] right) {
-        int i = 0, j = 0, k = 0;
-        int[] output = new int[left.length + right.length];
-        while (i < left.length && j < right.length) {
-            if (left[i] < right[j]) {
-                output[k++] = left[i++];
+    public static void mergeSort(String[] a, int from, int to) {
+        if (from == to) {
+            return;
+        }
+        int mid = (from + to) / 2;
+        // sort the first and the second half
+        mergeSort(a, from, mid);
+        mergeSort(a, mid + 1, to);
+        merge(a, from, mid, to);
+    }// end mergeSort
+//work
+
+    public static void merge(String[] a, int from, int mid, int to) {
+        int n = to - from + 1;       // size of the range to be merged
+        String[] b = new String[n];   // merge both halves into a temporary array b
+        int i1 = from;               // next element to consider in the first range
+        int i2 = mid + 1;            // next element to consider in the second range
+        int j = 0;                   // next open position in b
+
+        // as long as neither i1 nor i2 past the end, move the smaller into b
+        while (i1 <= mid && i2 <= to) {
+            if (a[i1].compareTo(a[i2]) < 0) {
+                b[j] = a[i1];
+                i1++;
             } else {
-                output[k++] = right[j++];
+                b[j] = a[i2];
+                i2++;
             }
+            j++;
         }
-        while (i < left.length) {
-            output[k++] = left[i++];
+
+        // note that only one of the two while loops below is executed
+        // copy any remaining entries of the first half
+        while (i1 <= mid) {
+            b[j] = a[i1];
+            i1++;
+            j++;
         }
-        while (j < right.length) {
-            output[k++] = right[j++];
+
+        // copy any remaining entries of the second half
+        while (i2 <= to) {
+            b[j] = a[i2];
+            i2++;
+            j++;
         }
-        return output;
-    }
-/*
-    public static void main(String args[]) {
-        int[] input = new int[]{2, 4, 1, 6, 8, 5, 3, 7};
-        System.out.println(Arrays.toString(Sorter.mergeSort(input)));
-    }
-    */
+
+        // copy back from the temporary array
+        for (j = 0; j < n; j++) {
+            a[from + j] = b[j];
+        }
+    }//end merge
+
 }
