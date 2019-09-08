@@ -59,13 +59,7 @@ public class Main {
         // ============================= Работа с файлами ======================================
         String[] inputFiles = cmd.getOptionValues("in");
         List<Integer> fileValues = new ArrayList<>();
-        /*
-        if (cmd.hasOption(intData.getOpt())) {
-            List<Integer> fileValues = new ArrayList<>();
-        } else {
-            List<String> fileValues = new ArrayList<>();
-        }
-        */
+
         try {
             String line;
             for (int i = 0; i < inputFiles.length; i++) {
@@ -73,14 +67,11 @@ public class Main {
                 while ((line = reader.readLine()) != null) {
                     Integer intValue = Integer.valueOf(line);
                     fileValues.add(intValue);
-
-                    /*if (cmd.hasOption("i")) {
-                        Integer intValue = Integer.valueOf(line);
-                        fileValues.add(intValue);
-                    } else {
-                        //String strValue = String.valueOf(line);
-                        //fileValues.add((T) strValue);
-                    }*/
+                    //if (cmd.hasOption("i")) {
+                    //    Integer.parseInt(line);
+                    //} else {
+                    //    fileValues.add(line);
+                    //}
                 }
                 reader.close();
             }
