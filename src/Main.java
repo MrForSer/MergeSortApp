@@ -1,11 +1,6 @@
 import org.apache.commons.cli.*;
-
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
-import java.io.PrintWriter;
-import java.io.File;
-import java.io.BufferedReader;
-import java.io.FileReader;
 
 public class Main {
 
@@ -85,34 +80,28 @@ public class Main {
         System.out.println(dataType);
 
         // ============================= Работа с файлами ======================================
+        String[] inputFiles = cmd.getOptionValues("in");
+        List<Integer> fileValues = new ArrayList<>();
         try {
-            String[] inputFiles = cmd.getOptionValues("in");
-            for (String str : inputFiles) {
-                //System.out.println(str);
-
-                // todo: читаем каждый файл и сравниваем полученные строки
-
-                BufferedReader reader = new BufferedReader(new FileReader(cmd.getOptionValue("in")));
-
-                // todo: тут должна быть логика для сортировки полученных массивов
-
-
-                // todo: записываем полученный результат в итоговый файл
-                String line;
-                File result = new File(cmd.getOptionValue("out", "out.txt")); //можно прокидывать наименование сразу сюда
-                if (!result.exists())
-                    result.createNewFile();
-                PrintWriter writer = new PrintWriter(result);
-                while ((line = reader.readLine()) != null) {
-                    // тут осуществляется запись в файл
-                    writer.println(line);
+            String line;
+            for(int i = 0; i < inputFiles.length; i++) {
+                BufferedReader reader = new BufferedReader(new FileReader(inputFiles[i]));
+                while((line = reader.readLine()) != null) {
+                    Integer uuid = Integer.valueOf(line);
+                    fileValues.add(uuid);
                 }
-                writer.close();
                 reader.close();
             }
-            // todo: разобраться с try / catch / finally и расставить их корректно
-        } catch (IOException e) {
-            System.out.println("Error: " + e);
+
+            // todo: логика сортировки
+
+            BufferedWriter writer = new BufferedWriter(new FileWriter(cmd.getOptionValue("out")));
+            Iterator<Integer> it = fileValues.iterator(); // todo: вместо fileValues тут должен быть результирующий массив
+            while(it.hasNext()) writer.write(it.next() + "\n");
+
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
