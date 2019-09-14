@@ -21,10 +21,10 @@ public class Main {
         intData.setArgs(0);
         Option stringData = new Option("s", "string", false, "тип данных: строки");
         stringData.setArgs(0);
-        Option outputOption = new Option("out", "output", true, "имя выходного файла");
+        Option outputOption = new Option("out", "outputFile", true, "имя выходного файла");
         outputOption.setArgs(1);
         outputOption.setRequired(true);
-        Option inputOption = new Option("in", "input", true, "имена входных файлов");
+        Option inputOption = new Option("in", "inputFiles", true, "имена входных файлов");
         inputOption.setArgs(Option.UNLIMITED_VALUES);
         inputOption.setRequired(true);
 
@@ -54,15 +54,15 @@ public class Main {
             System.exit(1);
         }
 
-        List fileValues = Reader.readFiles(cmd.getOptionValues("in"), cmd.hasOption("i"));
+        List fileValues = Reader.readFiles(cmd.getOptionValues("inputFiles"), cmd.hasOption("integer"));
 
         List mergedList;
-        if (cmd.hasOption("d")) {
+        if (cmd.hasOption("descended")) {
             mergedList = Sorter.mergeSortDesc(fileValues);
         } else {
             mergedList = Sorter.mergeSortAsc(fileValues);
         }
 
-        Writer.writeFile(mergedList, cmd.getOptionValue("out"));
+        Writer.writeFile(mergedList, cmd.getOptionValue("outputFile"));
     }
 }
