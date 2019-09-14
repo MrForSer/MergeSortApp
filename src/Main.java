@@ -55,9 +55,7 @@ public class Main {
             System.exit(1);
         }
 
-        // сохраняем полученные имена входящих файлов в массив;
         String[] inputFiles = cmd.getOptionValues("in");
-        // в соответствии с типом файла создаем массив для хранения его содержимого
         List fileValues;
         if (cmd.hasOption("i")) {
             fileValues = new ArrayList<Integer>();
@@ -88,16 +86,12 @@ public class Main {
         } catch (IOException e) {
             System.out.println("Ошибка: " + e);
         }
-
-
         // дебаг
         System.out.println(fileValues);
-
         // сортируем в соответствии с указанным порядком сортировки
         List mergedList;
         if (cmd.hasOption("d")) mergedList = Sorter.mergeSortDesc(fileValues);
         else mergedList = Sorter.mergeSortAsc(fileValues);
-
         // дебаг
         System.out.println(mergedList);
 
