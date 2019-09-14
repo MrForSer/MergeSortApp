@@ -5,10 +5,9 @@ import java.util.*;
 
 public class Main {
 
-
     public static void main(String[] args) {
 
-        // ============================= Опции командной строки ================================
+        // опции командной строки
         Options options = new Options();
         OptionGroup sortOrder = new OptionGroup();
         sortOrder.setRequired(true);
@@ -42,8 +41,7 @@ public class Main {
         options.addOption(outputOption);
         options.addOption(inputOption);
 
-        // ============================= Парсер командной строки ================================
-
+        // парсер командной строки
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
         CommandLine cmd = null;
@@ -57,7 +55,6 @@ public class Main {
             System.exit(1);
         }
 
-        // ============================= Работа с файлами ======================================
         // сохраняем полученные имена входящих файлов в массив;
         String[] inputFiles = cmd.getOptionValues("in");
         // в соответствии с типом файла создаем массив для хранения его содержимого
@@ -70,24 +67,26 @@ public class Main {
 
         // сохраняем данные в массив
         try {
-            String line;
             for (String inputFile : inputFiles) {
                 BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+                String line;
                 while ((line = reader.readLine()) != null) {
-                    if (cmd.hasOption("i")) {
-                        try {
-                            fileValues.add(Integer.valueOf(line));
-                        } catch (IllegalArgumentException error){
-                            System.out.println("В файле найдены не числовые значения(" + error + "), пропускаем");
+                    if (line.length() > 0) {
+                        if (cmd.hasOption("i")) {
+                            try {
+                                fileValues.add(Integer.valueOf(line));
+                            } catch (IllegalArgumentException error) {
+                                System.out.println("В файле " + inputFile + " найдены значения несоответствующего типа (" + error + "), пропускаем");
+                            }
+                        } else {
+                            fileValues.add(line);
                         }
-                    } else {
-                        fileValues.add(line);
                     }
                 }
                 reader.close();
             }
-        } catch (IOException e){
-            e.getMessage();
+        } catch (IOException e) {
+            System.out.println("Ошибка: " + e);
         }
 
 
@@ -107,7 +106,7 @@ public class Main {
             BufferedWriter writer = new BufferedWriter(new FileWriter(cmd.getOptionValue("out")));
             for (Object o : mergedList) writer.write(o + "\n");
         } catch (IOException e) {
-            e.getMessage();
+            System.out.println("Ошибка: " + e);
         }
     }
 }

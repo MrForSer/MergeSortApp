@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Sorter {
+class Sorter {
 
-    public static <T extends Comparable<T>> List<T> mergeSortAsc (List<T> list) {
+    static <T extends Comparable<T>> List<T> mergeSortAsc(List<T> list) {
         int len = list.size();
         if (len <= 1)
             return list;
@@ -28,7 +28,7 @@ public class Sorter {
         return combined;
     }
 
-    public static <T extends Comparable<T>> List<T> mergeSortDesc (List<T> list) {
+    static <T extends Comparable<T>> List<T> mergeSortDesc(List<T> list) {
         int len = list.size();
         if (len <= 1)
             return list;
