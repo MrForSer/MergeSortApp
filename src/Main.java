@@ -80,7 +80,7 @@ public class Main {
 
                 // сортировка
                 System.out.println(fileValues);
-                List<Integer> mergedList =  Sorter.mergeSort(fileValues);
+                List<Integer> mergedList =  Sorter.mergeSortDesc(fileValues);
                 System.out.println(mergedList);
 
                 BufferedWriter writer = new BufferedWriter(new FileWriter(cmd.getOptionValue("out")));
@@ -102,7 +102,7 @@ public class Main {
                 }
                 // сортировка
                 System.out.println(fileValues);
-                List<String> mergedList =  Sorter.mergeSort(fileValues);
+                List<String> mergedList =  Sorter.mergeSortDesc(fileValues);
                 System.out.println(mergedList);
 
                 BufferedWriter writer = new BufferedWriter(new FileWriter(cmd.getOptionValue("out")));
