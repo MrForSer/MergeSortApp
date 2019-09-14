@@ -1,12 +1,11 @@
 import org.apache.commons.cli.*;
-
-import java.io.*;
-import java.util.*;
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
 
+        // todo: подумать над тем, чтобы убрать опции
         // опции командной строки
         Options options = new Options();
         OptionGroup sortOrder = new OptionGroup();
@@ -55,52 +54,15 @@ public class Main {
             System.exit(1);
         }
 
-        String[] inputFiles = cmd.getOptionValues("in");
-        List fileValues;
-        if (cmd.hasOption("i")) {
-            fileValues = new ArrayList<Integer>();
-        } else {
-            fileValues = new ArrayList<String>();
-        }
+        List fileValues = Reader.readFiles(cmd.getOptionValues("in"), cmd.hasOption("i"));
 
-        // сохраняем данные в массив
-        try {
-            for (String inputFile : inputFiles) {
-                BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    if (line.length() > 0) {
-                        if (cmd.hasOption("i")) {
-                            try {
-                                fileValues.add(Integer.valueOf(line));
-                            } catch (IllegalArgumentException error) {
-                                System.out.println("В файле " + inputFile + " найдены значения несоответствующего типа (" + error + "), пропускаем");
-                            }
-                        } else {
-                            fileValues.add(line);
-                        }
-                    }
-                }
-                reader.close();
-            }
-        } catch (IOException e) {
-            System.out.println("Ошибка: " + e);
-        }
-        // дебаг
-        System.out.println(fileValues);
-        // сортируем в соответствии с указанным порядком сортировки
         List mergedList;
-        if (cmd.hasOption("d")) mergedList = Sorter.mergeSortDesc(fileValues);
-        else mergedList = Sorter.mergeSortAsc(fileValues);
-        // дебаг
-        System.out.println(mergedList);
-
-        // записываем отсортированный массив в файл
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(cmd.getOptionValue("out")));
-            for (Object o : mergedList) writer.write(o + "\n");
-        } catch (IOException e) {
-            System.out.println("Ошибка: " + e);
+        if (cmd.hasOption("d")) {
+            mergedList = Sorter.mergeSortDesc(fileValues);
+        } else {
+            mergedList = Sorter.mergeSortAsc(fileValues);
         }
+
+        Writer.writeFile(mergedList, cmd.getOptionValue("out"));
     }
 }
