@@ -2,8 +2,6 @@ import org.apache.commons.cli.*;
 import java.io.*;
 import java.util.*;
 
-import static java.lang.Integer.valueOf;
-
 public class Main {
 
 
@@ -58,60 +56,52 @@ public class Main {
             System.exit(1);
         }
 
-        // Сохраняем тип данных в переменную
-        String dt = "string";
-        if (cmd.hasOption("i")) dt = "integer";
-
         // ============================= Работа с файлами ======================================
         String[] inputFiles = cmd.getOptionValues("in");
         // создаем массив и заполняем содержимым файлов, затем сортируем его и записываем в файл
         // тут логика для массива типа int
-        if (dt.equals("integer")) {
-            List<Integer> fileValues = new ArrayList<>();
+        List fileValues;
+
+        if (cmd.hasOption("i")) fileValues = new ArrayList<Integer>();
+        else fileValues = new ArrayList<String>();
             try {
                 String line;
                 for (String inputFile : inputFiles) {
                     BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-                    while ((line = reader.readLine()) != null) fileValues.add(valueOf(line));
+                    while ((line = reader.readLine()) != null)
+                        if (cmd.hasOption("i")) fileValues.add(Integer.valueOf(line));
+                        else fileValues.add(line);
                     reader.close();
                 }
-
-                //todo : вынести сортировку и запись полученных значений в файл за if
-
-                // сортировка
-                System.out.println(fileValues);
-                List<Integer> mergedList =  Sorter.mergeSortDesc(fileValues);
-                System.out.println(mergedList);
-
-                BufferedWriter writer = new BufferedWriter(new FileWriter(cmd.getOptionValue("out")));
-                Iterator<Integer> it = mergedList.iterator();
-                while (it.hasNext()) writer.write(it.next() + "\n");
-                writer.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else {
-            // тут логика для массива типа String
-            List<String> fileValues = new ArrayList<>();
+                // сортировка
+                System.out.println(fileValues);
+
+                List mergedList;
+                if (cmd.hasOption("d")) mergedList = Sorter.mergeSortDesc(fileValues);
+                else mergedList = Sorter.mergeSortAsc(fileValues);
+
+                System.out.println(mergedList);
+
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter(cmd.getOptionValue("out")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (Object o : mergedList) {
             try {
-                String line;
-                for (String inputFile : inputFiles) {
-                    BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-                    while ((line = reader.readLine()) != null) fileValues.add(line);
-                    reader.close();
-                }
-                // сортировка
-                System.out.println(fileValues);
-                List<String> mergedList =  Sorter.mergeSortDesc(fileValues);
-                System.out.println(mergedList);
-
-                BufferedWriter writer = new BufferedWriter(new FileWriter(cmd.getOptionValue("out")));
-                Iterator<String> it = mergedList.iterator();
-                while (it.hasNext()) writer.write(it.next() + "\n");
-                writer.close();
-            } catch (Exception e) {
+                writer.write(o + "\n");
+            } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+        try {
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
