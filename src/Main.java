@@ -1,4 +1,5 @@
 import org.apache.commons.cli.*;
+
 import java.io.*;
 import java.util.*;
 
@@ -57,51 +58,56 @@ public class Main {
         }
 
         // ============================= Работа с файлами ======================================
+        // сохраняем полученные имена входящих файлов в массив;
         String[] inputFiles = cmd.getOptionValues("in");
-        // создаем массив и заполняем содержимым файлов, затем сортируем его и записываем в файл
-        // тут логика для массива типа int
+        // в соответствии с типом файла создаем массив для хранения его содержимого
         List fileValues;
+        if (cmd.hasOption("i")) {
+            fileValues = new ArrayList<Integer>();
+        } else {
+            fileValues = new ArrayList<String>();
+        }
 
-        if (cmd.hasOption("i")) fileValues = new ArrayList<Integer>();
-        else fileValues = new ArrayList<String>();
-            try {
-                String line;
-                for (String inputFile : inputFiles) {
-                    BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-                    while ((line = reader.readLine()) != null)
-                        if (cmd.hasOption("i")) fileValues.add(Integer.valueOf(line));
-                        else fileValues.add(line);
-                    reader.close();
+        // сохраняем данные в массив
+        try {
+            String line;
+            for (String inputFile : inputFiles) {
+                BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+                while ((line = reader.readLine()) != null) {
+                    if (cmd.hasOption("i")) {
+                        try {
+                            fileValues.add(Integer.valueOf(line));
+                        } catch (IllegalArgumentException error){
+                            System.out.println("В файле найдены не числовые значения(" + error + "), пропускаем");
+                        }
+                    } else {
+                        fileValues.add(line);
+                    }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+                reader.close();
             }
-                // сортировка
-                System.out.println(fileValues);
-
-                List mergedList;
-                if (cmd.hasOption("d")) mergedList = Sorter.mergeSortDesc(fileValues);
-                else mergedList = Sorter.mergeSortAsc(fileValues);
-
-                System.out.println(mergedList);
-
-        BufferedWriter writer = null;
-        try {
-            writer = new BufferedWriter(new FileWriter(cmd.getOptionValue("out")));
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException e){
+            e.getMessage();
         }
-        for (Object o : mergedList) {
-            try {
-                writer.write(o + "\n");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+
+
+        // дебаг
+        System.out.println(fileValues);
+
+        // сортируем в соответствии с указанным порядком сортировки
+        List mergedList;
+        if (cmd.hasOption("d")) mergedList = Sorter.mergeSortDesc(fileValues);
+        else mergedList = Sorter.mergeSortAsc(fileValues);
+
+        // дебаг
+        System.out.println(mergedList);
+
+        // записываем отсортированный массив в файл
         try {
-            writer.close();
+            BufferedWriter writer = new BufferedWriter(new FileWriter(cmd.getOptionValue("out")));
+            for (Object o : mergedList) writer.write(o + "\n");
         } catch (IOException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
     }
 }
