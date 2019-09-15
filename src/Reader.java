@@ -1,12 +1,15 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 class Reader {
 
     static List readFiles(String[] inputFiles, boolean isInt) {
+
+
+
         List fileValues;
         if (isInt) {
             fileValues = new ArrayList<Integer>();
@@ -15,7 +18,18 @@ class Reader {
         }
         try {
             for (String inputFile : inputFiles) {
-                BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+
+                // получаем путь к папке с jar'ом (чтобы не прописывать полный путь для каждого файла)
+                URL url = Reader.class.getProtectionDomain().getCodeSource().getLocation();
+                File myfile = null;
+                try {
+                    myfile = new File(url.toURI());
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+                File dir = myfile.getParentFile();
+                // считываем сведения из файла в соответствии с указанным типом
+                BufferedReader reader = new BufferedReader(new FileReader(dir + "\\" + inputFile));
                 String line;
                 while ((line = reader.readLine()) != null) {
                     if (line.length() > 0) {
