@@ -27,6 +27,9 @@ public class Main {
         Option inputOption = new Option("in", "inputFiles", true, "имена входных файлов");
         inputOption.setArgs(Option.UNLIMITED_VALUES);
         inputOption.setRequired(true);
+        Option printHelp = new Option("h", "help", true, "помощь");
+        printHelp.setArgs(0);
+        printHelp.setRequired(false);
 
         sortOrder.addOption(ascended);
         sortOrder.addOption(descended);
@@ -39,18 +42,18 @@ public class Main {
         options.addOption(stringData);
         options.addOption(outputOption);
         options.addOption(inputOption);
+        options.addOption(printHelp);
 
         // парсер командной строки
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
         CommandLine cmd = null;
 
-        // todo: сделать нормальный хэллпер
         try {
             cmd = parser.parse(options, args);
         } catch (ParseException e) {
             System.out.println(e.getMessage());
-            formatter.printHelp("utility-name", options);
+            formatter.printHelp("app_name [-a/-d] [-i/-s] [-out <path>] [-in <path> <path> ...]", options);
             System.exit(1);
         }
 
