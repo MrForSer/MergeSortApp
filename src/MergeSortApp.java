@@ -12,21 +12,21 @@ public class MergeSortApp {
         OptionGroup dataType = new OptionGroup();
         dataType.setRequired(true);
 
-        Option ascended = new Option("a", "ascended", false, "порядок сортировки: по возрастанию");
+        Option ascended = new Option("a", "ascended", false, "sort order: ascended");
         ascended.setArgs(0);
-        Option descended = new Option("d", "descended", false, "порядок сортировки: по убыванию");
+        Option descended = new Option("d", "descended", false, "sort order: descended");
         descended.setArgs(0);
-        Option intData = new Option("i", "integer", false, "тип данных: числа");
+        Option intData = new Option("i", "integer", false, "data type: integer");
         intData.setArgs(0);
-        Option stringData = new Option("s", "string", false, "тип данных: строки");
+        Option stringData = new Option("s", "string", false, "data type: strings");
         stringData.setArgs(0);
-        Option outputOption = new Option("out", "outputFile", true, "имя выходного файла");
+        Option outputOption = new Option("out", "outputFile", true, "output file name");
         outputOption.setArgs(1);
         outputOption.setRequired(true);
-        Option inputOption = new Option("in", "inputFiles", true, "имена входных файлов");
+        Option inputOption = new Option("in", "inputFiles", true, "input files names");
         inputOption.setArgs(Option.UNLIMITED_VALUES);
         inputOption.setRequired(true);
-        Option printHelp = new Option("h", "help", true, "помощь");
+        Option printHelp = new Option("h", "help", true, "help");
         printHelp.setArgs(0);
 
         sortOrder.addOption(ascended);
@@ -62,6 +62,6 @@ public class MergeSortApp {
         List mergedList = Sorter.mergeSort(fileValues, cmd.hasOption("descended"));
 
         // запись результата сортировки в файл
-        Writer.writeFile(mergedList, cmd.getOptionValue("outputFile"));
+        Writer.writeFile(mergedList, cmd.getOptionValue("outputFile", "out.txt"));
     }
 }

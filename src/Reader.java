@@ -23,7 +23,7 @@ class Reader {
                             try {
                                 fileValues.add(Integer.valueOf(line));
                             } catch (IllegalArgumentException error) {
-                                System.out.println("В файле " + inputFile + " найдены значения несоответствующего типа (" + error + "), пропускаем");
+                                System.out.println("File " + inputFile + " has incorrect data (" + error + "), skip");
                             }
                         } else {
                             fileValues.add(line);
@@ -33,7 +33,7 @@ class Reader {
                 reader.close();
             }
         } catch (IOException e) {
-            System.out.println("Ошибка: " + e);
+            System.out.println("Error: " + e);
         }
         return fileValues;
     }

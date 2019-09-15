@@ -11,7 +11,7 @@ class Writer {
             for (Object o : mergedList) writer.write(o + "\n");
             writer.close();
         } catch (IOException e) {
-            System.out.println("Ошибка: " + e);
+            System.out.println("Error: " + e);
         }
     }
 }
