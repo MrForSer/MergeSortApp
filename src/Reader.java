@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Reader {
+class Reader {
 
     static List readFiles(String[] inputFiles, boolean isInt) {
         List fileValues;
@@ -13,7 +13,7 @@ public class Reader {
         } else {
             fileValues = new ArrayList<String>();
         }
-        // сохраняем данные в массив
+
         try {
             for (String inputFile : inputFiles) {
                 BufferedReader reader = new BufferedReader(new FileReader(inputFile));

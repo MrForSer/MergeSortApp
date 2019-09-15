@@ -5,7 +5,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // todo: подумать над тем, чтобы убрать опции
         // опции командной строки
         Options options = new Options();
         OptionGroup sortOrder = new OptionGroup();
@@ -29,7 +28,6 @@ public class Main {
         inputOption.setRequired(true);
         Option printHelp = new Option("h", "help", true, "помощь");
         printHelp.setArgs(0);
-        printHelp.setRequired(false);
 
         sortOrder.addOption(ascended);
         sortOrder.addOption(descended);
@@ -57,15 +55,13 @@ public class Main {
             System.exit(1);
         }
 
+        // чтение файлов
         List fileValues = Reader.readFiles(cmd.getOptionValues("inputFiles"), cmd.hasOption("integer"));
 
-        List mergedList;
-        if (cmd.hasOption("descended")) {
-            mergedList = Sorter.mergeSortDesc(fileValues);
-        } else {
-            mergedList = Sorter.mergeSortAsc(fileValues);
-        }
+        // сортировка
+        List mergedList = Sorter.mergeSort(fileValues, cmd.hasOption("descended"));
 
+        // запись результата сортировки в файл
         Writer.writeFile(mergedList, cmd.getOptionValue("outputFile"));
     }
 }

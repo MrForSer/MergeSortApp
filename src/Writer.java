@@ -3,7 +3,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-public class Writer {
+class Writer {
 
     static void writeFile(List mergedList, String outputFile) {
         try {
