@@ -13,7 +13,6 @@ class Reader {
         } else {
             fileValues = new ArrayList<String>();
         }
-
         try {
             for (String inputFile : inputFiles) {
                 BufferedReader reader = new BufferedReader(new FileReader(inputFile));

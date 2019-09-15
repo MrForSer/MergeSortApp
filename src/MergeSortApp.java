@@ -1,7 +1,7 @@
 import org.apache.commons.cli.*;
 import java.util.List;
 
-public class Main {
+public class MergeSortApp {
 
     public static void main(String[] args) {
 
