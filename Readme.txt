@@ -27,6 +27,3 @@ java -jar C:\MSA\MergeSortApp.jar -d -s -out out.txt -in in1.txt in2.txt (для
 Вместо "C:\MSA\MergeSortApp.jar" необходимо указать корректный путь к файлу jar.
 При запуске кода из IDE убедитесь, что входящие файлы находятся в родительском каталоге для .class файлов.
 Например C:\Users\user\IdeaProjects\MergeSortApp\out\production < тут файлы для обработки, C:\Users\user\IdeaProjects\MergeSortApp\out\production\MergeSortApp\ < тут .class файлы.
-
-Программа написана Сергеем Лагуновым, для Focus Start ЦФТ.
-Контактные данные: тел. +7(913)788-24-68, эл. почта: mr.forser@gmail.com.
